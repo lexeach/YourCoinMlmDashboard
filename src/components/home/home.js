@@ -271,7 +271,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {frznBalance ? frznBalance : 0} (TRCT)
+                      {frznBalance ? frznBalance : 0} (YOUR COIN)
                     </h4>
                   </div>
                 </div>
@@ -287,7 +287,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {tokenBalance ? tokenBalance : 0} (TRCT)
+                      {tokenBalance ? tokenBalance : 0} (YOUR COIN)
                     </h4>
                   </div>
                 </div>
@@ -365,7 +365,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {tokenRewarded ? tokenRewarded : 0} (TRCT)
+                      {tokenRewarded ? tokenRewarded : 0} (YOUR COIN)
                     </h4>
                   </div>
                 </div>
@@ -398,7 +398,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {nextReward ? nextReward : 0} (TRCT)
+                      {nextReward ? nextReward : 0} (YOUR COIN)
                     </h4>
                   </div>
                 </div>
@@ -409,7 +409,7 @@ const Dashboard = () => {
 
         <div className="col-sm-12 grid-margin">
           <div className="card">
-            <div className="card-body text-center">TRCT address 0x2eD68EF708f0a04eaeb705D1A5700F72E9a6054C</div>
+            <div className="card-body text-center">YOUR COIN address 0x2eD68EF708f0a04eaeb705D1A5700F72E9a6054C</div>
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12 grid-margin">
