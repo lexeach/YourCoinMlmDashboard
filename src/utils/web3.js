@@ -1,7 +1,7 @@
 // PolyGon Contract 
 module.exports = {
     ICU : {
-        address:'0x4b6637a8f7e6d820c961434ac7f25fcaebd0bdf8',
+        address:'0x3f1452f78935bd84dd7bade6c6b9625960e11ad4',
         ABI:[
 	{
 		"inputs": [
