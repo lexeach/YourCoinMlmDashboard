@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import abiDecoder from "abi-decoder";
+
+import { useLocation } from "react-router-dom";
 import Web3 from "web3";
 import { ICU, BEP20, USDT } from "../../utils/web3.js";
+
+import { baseUrl, ClientBaseURL } from "../../utils/confix";
 
 const Dashboard = () => {
   const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
@@ -25,11 +29,29 @@ const Dashboard = () => {
   // set it latter
   const [tokenPrice, setTokenPrice] = useState();
   const [nextReward, setNetxtReward] = useState();
+  const [copySuccess, setCopySuccess] = useState(false);
+
+  const [userAc, setUserAc] = useState(0);
+
+  //////////////////////////////////
+  const location = useLocation().search;
+  const [refVal, setRefVal] = useState("");
+
+  const abcref = new URLSearchParams(location).get("abcref");
+  const refid = new URLSearchParams(location).get("refid");
+
+  useEffect(() => {
+    if (abcref === "123xyz") {
+      if (refid !== 0) {
+        setReferrerID({ ...referrerID, id: refid });
+      }
+    }
+  }, []);
+  //////////////////////////////////
 
   useEffect(() => {
     async function load() {
       const accounts = await web3.eth.requestAccounts();
-      console.log("accounts00000NNNN", accounts);
       if (!accounts) {
         alert("please install metamask");
       }
@@ -96,6 +118,7 @@ const Dashboard = () => {
 
   const handleChange = (event) => {
     let { name, value } = event.target;
+    console.log("name", name, "value", value, "referrerId", referrerID);
     setReferrerID({ ...referrerID, [name]: value });
   };
 
@@ -259,6 +282,32 @@ const Dashboard = () => {
       console.log("params", param_values);
     });
   }
+  // your function to copy here
+  const copyToClipBoard = async () => {
+    try {
+      let ICU_ = new web3.eth.Contract(ICU.ABI, ICU.address);
+      let { id } = await ICU_.methods.users(userAc).call();
+      if (parseInt(id) === 0) {
+        alert("Referral Id not found");
+        return;
+      }
+      let refLink = `${ClientBaseURL}?refid=${id}&abcref=123xyz`;
+      await navigator.clipboard.writeText(refLink);
+      setCopySuccess(true);
+    } catch (err) {
+      setCopySuccess(false);
+    }
+  };
+  async function userAccount() {
+    const accounts = await web3.eth.requestAccounts();
+    if (!accounts) {
+      alert("please install metamask");
+    }
+    setUserAc(accounts[0]);
+  }
+  useEffect(() => {
+    userAccount();
+  }, []);
 
   return (
     <div className="home-container">
@@ -271,7 +320,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {frznBalance ? frznBalance : 0} (YOUR COIN)
+                      {frznBalance ? frznBalance : 0} (TRCT)
                     </h4>
                   </div>
                 </div>
@@ -287,7 +336,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {tokenBalance ? tokenBalance : 0} (YOUR COIN)
+                      {tokenBalance ? tokenBalance : 0} (TRCT)
                     </h4>
                   </div>
                 </div>
@@ -365,7 +414,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {tokenRewarded ? tokenRewarded : 0} (YOUR COIN)
+                      {tokenRewarded ? tokenRewarded : 0} (TRCT)
                     </h4>
                   </div>
                 </div>
@@ -398,7 +447,7 @@ const Dashboard = () => {
                 <div className="col-8 col-sm-12 col-xl-8 my-auto">
                   <div className="d-flex d-sm-block d-md-flex align-items-center">
                     <h4 className="mb-0">
-                      {nextReward ? nextReward : 0} (YOUR COIN)
+                      {nextReward ? nextReward : 0} (TRCT)
                     </h4>
                   </div>
                 </div>
@@ -409,7 +458,7 @@ const Dashboard = () => {
 
         <div className="col-sm-12 grid-margin">
           <div className="card">
-            <div className="card-body text-center">YOUR COIN address 0x7A24c4634c9A52886999F61572081d655352b2d2</div>
+            <div className="card-body text-center">TRCT contract 0x2eD68EF708f0a04eaeb705D1A5700F72E9a6054C</div>
           </div>
         </div>
         <div className="col-lg-6 col-md-6 col-sm-12 grid-margin">
@@ -473,6 +522,17 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="col-12 text-center">
+          <button className={`ref-btn`} onClick={copyToClipBoard}>
+            Click here to copy your Referral link
+          </button>
+          {copySuccess === true ? (
+            <span className="ref-btn-success">✓ copied.</span>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

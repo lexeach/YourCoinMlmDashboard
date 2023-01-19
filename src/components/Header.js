@@ -29,8 +29,19 @@ function DrawerAppBar(props) {
 
   const [account, setAccount] = React.useState();
 
+  const [copySuccess, setCopySuccess] = React.useState(false);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+  const copyToClipBoard = async (address) => {
+    try {
+      console.log("address", address);
+      await navigator.clipboard.writeText(address);
+      setCopySuccess("Copied!");
+    } catch (err) {
+      setCopySuccess("Failed to copy!");
+    }
   };
 
   const drawer = (
@@ -44,7 +55,11 @@ function DrawerAppBar(props) {
       <List>
         {/* <ListItem disablePadding> */}
         <ListItemButton sx={{ textAlign: "center" }}>
-          <ListItemText className="account_mob_" primary={account} />
+          <ListItemText
+            className="account_mob_"
+            onClick={() => copyToClipBoard(account)}
+            primary={account}
+          />
         </ListItemButton>
         {/* </ListItem> */}
       </List>
@@ -76,13 +91,13 @@ function DrawerAppBar(props) {
     window.location.reload();
   }
 
-  console.log("ethereum account", ethereum.selectedAddress);
+  // console.log("ethereum account", ethereum.selectedAddress);
 
   React.useEffect(() => {
-    console.log("load account");
+    // console.log("load account");
     async function load() {
       const accounts = await web3.eth.requestAccounts();
-      console.log("accounts", accounts);
+      // console.log("accounts", accounts);
       setAccount(accounts[0]);
     }
     load();
@@ -109,7 +124,12 @@ function DrawerAppBar(props) {
             <img className="logo-img" src={Logo} alt="ICOlogo" />
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Button sx={{ color: "#fff" }}>{account}</Button>
+            <Button
+              sx={{ color: "#fff" }}
+              onClick={() => copyToClipBoard(account)}
+            >
+              {account}
+            </Button>
             <Link to={`/`}>
               <Button sx={{ color: "#fff" }}>Home</Button>
             </Link>
